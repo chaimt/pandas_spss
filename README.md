@@ -6,7 +6,7 @@ A Python project using pandas with `uv` package manager and Go task for environm
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.13 or higher
 - [uv](https://docs.astral.sh/uv/) - Fast Python package installer and resolver
 - [Go task](https://taskfile.dev/) - Task runner / build tool
 
@@ -75,7 +75,8 @@ pandas-spss/
 
 - **Fast dependency management** with `uv`
 - **Automated environment setup** with Go task
-- **Comprehensive testing** with pytest
+- **Comprehensive testing** with pytest and tox
+- **Multi-environment testing** with tox (Python 3.11, 3.12, 3.13)
 - **Code quality tools**:
   - Black for code formatting
   - Flake8 for linting
@@ -109,6 +110,22 @@ uv run pytest tests/ -v
 
 # Run specific test file
 uv run pytest tests/test_main.py -v
+
+# Run tests with tox (multiple Python versions)
+tox
+
+# Run specific tox environment
+tox -e py313
+tox -e lint
+tox -e type-check
+
+# Run tox with specific pytest arguments
+tox -- pytest tests/ -v
+
+# Or use the convenience script
+./scripts/run-tox.sh py313
+./scripts/run-tox.sh lint
+./scripts/run-tox.sh type-check
 ```
 
 ## 🔧 Development Workflow
@@ -133,6 +150,39 @@ uv run pytest tests/test_main.py -v
 
 4. **Commit your changes**
 
+## 🧪 Testing with Tox
+
+Tox provides multi-environment testing capabilities:
+
+### Available Environments
+- `py311`, `py312`, `py313` - Test against different Python versions
+- `lint` - Run code linting (black + flake8)
+- `type-check` - Run type checking with mypy
+
+### Usage
+```bash
+# Run all environments
+task tox
+
+# Run specific environment
+task tox-lint
+task tox-type-check
+
+# Run with tox directly
+tox -e py313
+tox -e lint
+tox -e type-check
+
+# Run with custom arguments
+tox -e py313 -- pytest tests/ -v
+```
+
+### Benefits
+- **Multi-version testing**: Ensures compatibility across Python versions
+- **Isolated environments**: Each test runs in a clean virtual environment
+- **CI/CD ready**: Perfect for automated testing pipelines
+- **Consistent results**: Same environment setup across different machines
+
 ## 📦 Dependencies
 
 ### Main Dependencies
@@ -144,6 +194,7 @@ uv run pytest tests/test_main.py -v
 - `black>=23.0.0` - Code formatter
 - `flake8>=6.0.0` - Linter
 - `mypy>=1.0.0` - Type checker
+- `tox>=4.0.0` - Multi-environment testing
 
 ## 🤝 Contributing
 

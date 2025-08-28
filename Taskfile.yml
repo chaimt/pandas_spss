@@ -1,0 +1,95 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: Setup the development environment with uv
+    cmds:
+      - uv sync
+    sources:
+      - pyproject.toml
+    generates:
+      - .venv/
+
+  install:
+    desc: Install dependencies using uv
+    cmds:
+      - uv sync
+    deps: [setup]
+
+  dev-install:
+    desc: Install development dependencies
+    cmds:
+      - uv sync --dev
+    deps: [setup]
+
+  run:
+    desc: Run the main application
+    cmds:
+      - uv run python src/main.py
+    deps: [install]
+
+  test:
+    desc: Run tests with pytest
+    cmds:
+      - uv run pytest tests/ -v
+    deps: [dev-install]
+
+  lint:
+    desc: Run linting with flake8
+    cmds:
+      - uv run flake8 src/ tests/
+    deps: [dev-install]
+
+  format:
+    desc: Format code with black
+    cmds:
+      - uv run black src/ tests/
+    deps: [dev-install]
+
+  type-check:
+    desc: Run type checking with mypy
+    cmds:
+      - uv run mypy src/
+    deps: [dev-install]
+
+  clean:
+    desc: Clean up generated files
+    cmds:
+      - rm -rf .venv/
+      - rm -rf __pycache__/
+      - rm -rf .pytest_cache/
+      - rm -rf .mypy_cache/
+      - find . -name "*.pyc" -delete
+      - find . -name "__pycache__" -type d -exec rm -rf {} +
+
+  check:
+    desc: Run all checks (lint, type-check, test)
+    cmds:
+      - task: lint
+      - task: type-check
+      - task: test
+    deps: [dev-install]
+
+  tox:
+    desc: Run tests with tox (multiple Python versions)
+    cmds:
+      - uv run tox
+    deps: [dev-install]
+
+  tox-lint:
+    desc: Run linting with tox
+    cmds:
+      - uv run tox -e lint
+    deps: [dev-install]
+
+  tox-type-check:
+    desc: Run type checking with tox
+    cmds:
+      - uv run tox -e type-check
+    deps: [dev-install]
+
+  shell:
+    desc: Activate the virtual environment shell
+    cmds:
+      - uv shell
+    deps: [install]
