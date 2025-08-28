@@ -53,6 +53,13 @@ Use `task --list` to see all available tasks, or run individual tasks:
 - `task type-check` - Run type checking with mypy
 - `task check` - Run all checks (lint, type-check, test)
 
+### Jupyter Notebooks
+- `task jupyter-setup` - Setup Jupyter environment and create notebooks directory
+- `task jupyter` - Start Jupyter Lab for interactive notebooks
+- `task jupyter-notebook` - Start Jupyter Notebook (classic interface)
+- `task jupyter-test` - Test Jupyter environment with tox
+- `task jupyter-install` - Install Jupyter dependencies
+
 ### Maintenance
 - `task clean` - Clean up generated files
 
@@ -66,7 +73,14 @@ pandas-spss/
 ├── tests/
 │   ├── __init__.py
 │   └── test_main.py     # Tests for main module
+├── notebooks/
+│   ├── .gitkeep
+│   └── pandas_spss_demo.ipynb  # Jupyter notebook demo
+├── scripts/
+│   ├── run-tox.sh       # Tox runner script
+│   └── start-jupyter.sh # Jupyter startup script
 ├── pyproject.toml       # Project configuration and dependencies
+├── jupyter_config.py    # Jupyter configuration
 ├── Taskfile.yml         # Go task configuration
 └── README.md           # This file
 ```
@@ -77,6 +91,7 @@ pandas-spss/
 - **Automated environment setup** with Go task
 - **Comprehensive testing** with pytest and tox
 - **Multi-environment testing** with tox (Python 3.11, 3.12, 3.13)
+- **Jupyter notebook support** with interactive data analysis
 - **Code quality tools**:
   - Black for code formatting
   - Flake8 for linting
@@ -127,6 +142,61 @@ tox -- pytest tests/ -v
 ./scripts/run-tox.sh lint
 ./scripts/run-tox.sh type-check
 ```
+
+## 🔬 Jupyter Notebooks
+
+This project includes Jupyter notebook support for interactive data analysis and exploration.
+
+### Quick Start
+
+```bash
+# Start Jupyter Lab (recommended)
+task jupyter
+
+# Start Jupyter Notebook (classic interface)
+task jupyter-notebook
+
+# Or use the script
+./scripts/start-jupyter.sh
+
+# Or manually
+uv run jupyter lab --notebook-dir="$(pwd)" --ip=0.0.0.0 --port=8888 --no-browser
+```
+
+### Available Notebooks
+
+- **`notebooks/pandas_spss_demo.ipynb`** - Comprehensive demo of the project's functionality
+  - Sample data generation
+  - Data analysis and statistics
+  - Data visualization with matplotlib and seaborn
+  - Interactive data exploration
+  - Export capabilities
+
+### Features
+
+- **Interactive Analysis**: Explore data with live code execution
+- **Data Visualization**: Create charts and graphs with matplotlib and seaborn
+- **Project Integration**: Direct access to project functions from notebooks
+- **Export Capabilities**: Save analysis results and visualizations
+
+### Using with Tox
+
+```bash
+# Test Jupyter environment
+task jupyter-test
+
+# Or directly with tox
+tox -e jupyter
+
+# This will install dependencies and verify Jupyter setup
+```
+
+### Tips
+
+- The `src/` directory is automatically added to the Python path in notebooks
+- Use `from main import create_sample_data, analyze_data` to import project functions
+- Notebooks include comprehensive examples and documentation
+- All visualizations are interactive and can be customized
 
 ## 🔧 Development Workflow
 

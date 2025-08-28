@@ -5,6 +5,7 @@ tasks:
     desc: Setup the development environment with uv
     cmds:
       - uv sync
+      - mkdir -p notebooks
     sources:
       - pyproject.toml
     generates:
@@ -86,6 +87,38 @@ tasks:
     desc: Run type checking with tox
     cmds:
       - uv run tox -e type-check
+    deps: [dev-install]
+
+  jupyter:
+    desc: Start Jupyter Lab for interactive notebooks
+    cmds:
+      - uv run jupyter lab --notebook-dir="{{.PWD}}" --ip=0.0.0.0 --port=8888 --no-browser
+    deps: [dev-install]
+
+  jupyter-notebook:
+    desc: Start Jupyter Notebook (classic interface)
+    cmds:
+      - uv run jupyter notebook --notebook-dir="{{.PWD}}" --ip=0.0.0.0 --port=8888 --no-browser
+    deps: [dev-install]
+
+  jupyter-test:
+    desc: Test Jupyter environment with tox
+    cmds:
+      - uv run tox -e jupyter
+    deps: [dev-install]
+
+  jupyter-install:
+    desc: Install Jupyter dependencies
+    cmds:
+      - uv pip install jupyter jupyterlab ipykernel notebook matplotlib seaborn
+    deps: [dev-install]
+
+  jupyter-setup:
+    desc: Setup Jupyter environment and create notebooks directory
+    cmds:
+      - mkdir -p notebooks
+      - echo "# Jupyter notebooks directory" > notebooks/README.md
+      - task: jupyter-install
     deps: [dev-install]
 
   shell:
