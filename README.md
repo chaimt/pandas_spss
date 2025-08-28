@@ -90,7 +90,7 @@ pandas-spss/
 - **Fast dependency management** with `uv`
 - **Automated environment setup** with Go task
 - **Comprehensive testing** with pytest and tox
-- **Multi-environment testing** with tox (Python 3.11, 3.12, 3.13)
+- **Multi-environment testing** with tox (Python 3.13)
 - **Jupyter notebook support** with interactive data analysis
 - **Code quality tools**:
   - Black for code formatting
@@ -165,7 +165,7 @@ uv run jupyter lab --notebook-dir="$(pwd)" --ip=0.0.0.0 --port=8888 --no-browser
 
 ### Available Notebooks
 
-- **`notebooks/pandas_spss_demo.ipynb`** - Comprehensive demo of the project's functionality
+- **`notebooks/pandas_spss_demo.ipynb`** - Demo notebook for the project's functionality
   - Sample data generation
   - Data analysis and statistics
   - Data visualization with matplotlib and seaborn
@@ -225,9 +225,10 @@ tox -e jupyter
 Tox provides multi-environment testing capabilities:
 
 ### Available Environments
-- `py311`, `py312`, `py313` - Test against different Python versions
+- `py313` - Test against Python 3.13
 - `lint` - Run code linting (black + flake8)
 - `type-check` - Run type checking with mypy
+- `jupyter` - Test Jupyter environment setup
 
 ### Usage
 ```bash
@@ -256,15 +257,21 @@ tox -e py313 -- pytest tests/ -v
 ## 📦 Dependencies
 
 ### Main Dependencies
-- `pandas>=2.0.0` - Data manipulation and analysis
-- `numpy>=1.24.0` - Numerical computing
+- `pandas>=2.3.2` - Data manipulation and analysis
+- `numpy>=2.3.2` - Numerical computing
+- `matplotlib>=3.8.0` - Data visualization
+- `seaborn>=0.13.0` - Statistical data visualization
 
 ### Development Dependencies
-- `pytest>=7.0.0` - Testing framework
-- `black>=23.0.0` - Code formatter
-- `flake8>=6.0.0` - Linter
-- `mypy>=1.0.0` - Type checker
+- `pytest>=8.4.1` - Testing framework
+- `black>=25.1.0` - Code formatter
+- `flake8>=7.3.0` - Linter
+- `mypy>=1.17.1` - Type checker
 - `tox>=4.0.0` - Multi-environment testing
+- `jupyter>=1.0.0` - Jupyter notebook support
+- `jupyterlab>=4.0.0` - Jupyter Lab interface
+- `ipykernel>=6.0.0` - IPython kernel
+- `notebook>=7.0.0` - Classic Jupyter notebook
 
 ## 🤝 Contributing
 
